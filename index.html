@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Ride App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to Auto Ride App</h1>
+    <p>Choose your role to continue</p>
+  </header>
+
+  <main>
+    <div class="role-card" onclick="goToSignup('passenger')">
+      <h2>Passenger</h2>
+      <p>Book rides and track drivers in real-time</p>
+    </div>
+
+    <div class="role-card" onclick="goToSignup('driver')">
+      <h2>Driver</h2>
+      <p>Accept rides and manage your earnings</p>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
