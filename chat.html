@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="search-bar">
+            <input type="text" id="searchUser" placeholder="Search by username">
+            <button onclick="searchUser()">Search</button>
+        </div>
+        <div id="userList"></div>
+        <div id="chatWindow" style="display:none;">
+            <div class="chat-header">
+                <h3 id="friendName"></h3>
+                <div>
+                    <button onclick="startCall('video')">🎥</button>
+                    <button onclick="startCall('audio')">📞</button>
+                </div>
+            </div>
+            <div id="messages" class="messages"></div>
+            <input type="text" id="msgInput" placeholder="Type a message">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC7y4VIDIS8z4VBQ4Hmw5zyoognJ-zc3v0",
+            authDomain: "auto-help-a68b9.firebaseapp.com",
+            databaseURL: "https://auto-help-a68b9-default-rtdb.firebaseio.com",
+            projectId: "auto-help-a68b9",
+            storageBucket: "auto-help-a68b9.firebasestorage.app",
+            messagingSenderId: "488239907587",
+            appId: "1:488239907587:web:0c2b30a8f0df735fd1df36"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+        let currentUser, selectedUser;
+
+        auth.onAuthStateChanged(user => {
+            if(user){
+                currentUser = user;
+            } else {
+                window.location = "index.html";
+            }
+        });
+
+        function searchUser() {
+            const searchName = document.getElementById('searchUser').value.toLowerCase();
+            db.ref('users').once('value', snapshot => {
+                const users = snapshot.val();
+                let html = '';
+                for(const uid in users){
+                    if(users[uid].username.toLowerCase().includes(searchName)){
+                        html += `<div onclick="selectUser('${uid}','${users[uid].username}')">${users[uid].username}</div>`;
+                    }
+                }
+                document.getElementById('userList').innerHTML = html;
+            });
+        }
+
+        function selectUser(uid, username) {
+            selectedUser = uid;
+            document.getElementById('friendName').innerText = username;
+            document.getElementById('chatWindow').style.display = 'block';
+            document.getElementById('messages').innerHTML = '';
+
+            db.ref('messages/' + getChatId(currentUser.uid, selectedUser)).on('child_added', snapshot => {
+                const msg = snapshot.val();
+                document.getElementById('messages').innerHTML += `<div><b>${msg.sender === currentUser.uid ? 'You' : username}:</b> ${msg.text}</div>`;
+            });
+        }
+
+        function getChatId(uid1, uid2){
+            return uid1 < uid2 ? uid1 + '_' + uid2 : uid2 + '_' + uid1;
+        }
+
+        function sendMessage() {
+            const text = document.getElementById('msgInput').value;
+            if(text.trim() === '') return;
+            db.ref('messages/' + getChatId(currentUser.uid, selectedUser)).push({
+                sender: currentUser.uid,
+                text: text
+            });
+            document.getElementById('msgInput').value = '';
+        }
+
+        function startCall(type){
+            const room = getChatId(currentUser.uid, selectedUser);
+            const url = `https://meet.jit.si/${room}`;
+            if(type === 'video'){
+                window.open(url, '_blank');
+            } else {
+                window.open(url + '#config.startWithVideoMuted=true', '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
