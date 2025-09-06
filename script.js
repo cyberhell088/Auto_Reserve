@@ -1,13 +1,12 @@
 // script.js
 
 document.getElementById('driverBtn').addEventListener('click', function() {
-  alert('Driver page will open');
-  // Uncomment below to redirect to driver page
+  alert('Welcome, Driver! You will be redirected to the driver page.');
+  // Redirect to driver page
   // window.location.href = 'driver.html';
 });
 
 document.getElementById('passengerBtn').addEventListener('click', function() {
-  alert('Passenger page will open');
-  // Uncomment below to redirect to passenger page
-  // window.location.href = 'passenger.html';
+  // Redirect to passenger signup page
+  window.location.href = 'passenger.html';
 });
