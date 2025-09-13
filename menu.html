@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu - Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Auto Navbar -->
+  <script src="js/navbar.js"></script>
+
+  <!-- Main Content -->
+  <main>
+    <h1>Our Menu</h1>
+    <div class="menu-container">
+      <div class="item">
+        <img src="assets/food/pizza.jpg" alt="Cheese Pizza">
+        <h3>Cheese Pizza</h3>
+        <p>Rs. 500</p>
+        <button onclick="addToCart('Cheese Pizza', 500)">Add to Cart</button>
+      </div>
+
+      <div class="item">
+        <img src="assets/food/burger.jpg" alt="Chicken Burger">
+        <h3>Chicken Burger</h3>
+        <p>Rs. 350</p>
+        <button onclick="addToCart('Chicken Burger', 350)">Add to Cart</button>
+      </div>
+
+      <div class="item">
+        <img src="assets/food/pasta.jpg" alt="Pasta">
+        <h3>Veg Pasta</h3>
+        <p>Rs. 400</p>
+        <button onclick="addToCart('Veg Pasta', 400)">Add to Cart</button>
+      </div>
+
+      <div class="item">
+        <img src="assets/food/salad.jpg" alt="Salad">
+        <h3>Fresh Salad</h3>
+        <p>Rs. 250</p>
+        <button onclick="addToCart('Fresh Salad', 250)">Add to Cart</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Cart Script -->
+  <script src="js/cart.js"></script>
+
+  <!-- Auto Footer -->
+  <script src="js/footer.js"></script>
+
+</body>
+</html>
