@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Order - Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Auto Navbar -->
+  <script src="js/navbar.js"></script>
+
+  <main>
+    <h1>Track Your Order</h1>
+
+    <label for="order-index">Enter Order Number:</label><br>
+    <input type="number" id="order-index" placeholder="e.g., 1" min="1"><br><br>
+    <button class="btn" onclick="trackOrder()">Track Order</button>
+
+    <div id="tracking-result" style="margin-top:20px;"></div>
+  </main>
+
+  <script>
+    function trackOrder() {
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const index = parseInt(document.getElementById("order-index").value) - 1;
+      const resultDiv = document.getElementById("tracking-result");
+
+      if(isNaN(index) || index < 0 || index >= orders.length){
+        resultDiv.innerHTML = "<p>Invalid order number.</p>";
+        return;
+      }
+
+      const order = orders[index];
+      resultDiv.innerHTML = `
+        <h3>Order #${index + 1}</h3>
+        <p><strong>Name:</strong> ${order.name}</p>
+        <p><strong>Status:</strong> ${order.status}</p>
+        <p><strong>Total:</strong> Rs. ${order.total}</p>
+      `;
+    }
+  </script>
+
+  <!-- Auto Footer -->
+  <script src="js/footer.js"></script>
+
+</body>
+</html>
