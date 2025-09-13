@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Auto Navbar -->
+  <script src="js/navbar.js"></script>
+
+  <main>
+    <h1>Checkout</h1>
+
+    <form id="checkout-form">
+      <label for="name">Full Name:</label><br>
+      <input type="text" id="name" required><br><br>
+
+      <label for="address">Delivery Address:</label><br>
+      <textarea id="address" rows="3" required></textarea><br><br>
+
+      <label for="phone">Phone Number:</label><br>
+      <input type="tel" id="phone" required><br><br>
+
+      <label for="payment">Payment Method:</label><br>
+      <select id="payment" required>
+        <option value="cod">Cash on Delivery</option>
+        <option value="khalti">Khalti (Online)</option>
+        <option value="esewa">eSewa (Online)</option>
+      </select><br><br>
+
+      <button type="submit" class="btn">Place Order</button>
+    </form>
+
+  </main>
+
+  <!-- Checkout Script -->
+  <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const checkoutForm = document.getElementById("checkout-form");
+
+    checkoutForm.addEventListener("submit", function(e){
+      e.preventDefault();
+
+      if(cart.length === 0){
+        alert("Your cart is empty!");
+        return;
+      }
+
+      const order = {
+        name: document.getElementById("name").value,
+        address: document.getElementById("address").value,
+        phone: document.getElementById("phone").value,
+        payment: document.getElementById("payment").value,
+        items: cart,
+        total: cart.reduce((sum, i) => sum + i.price, 0),
+        date: new Date().toLocaleString(),
+        status: "Received"
+      };
+
+      // Save order to localStorage (replace with Firebase Firestore later)
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      orders.push(order);
+      localStorage.setItem("orders", JSON.stringify(orders));
+
+      // Clear cart
+      localStorage.removeItem("cart");
+
+      alert("Order placed successfully!");
+      window.location.href = "orders.html"; // Redirect to orders page
+    });
+  </script>
+
+  <!-- Auto Footer -->
+  <script src="js/footer.js"></script>
+
+</body>
+</html>
